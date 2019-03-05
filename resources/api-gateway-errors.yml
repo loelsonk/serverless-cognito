@@ -1,0 +1,33 @@
+Resources:
+  GatewayResponseDefault4XX:
+    Type: 'AWS::ApiGateway::GatewayResponse'
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+      ResponseType: DEFAULT_4XX
+      RestApiId:
+        Ref: 'ApiGatewayRestApi'
+  GatewayResponseDefault5XX:
+    Type: 'AWS::ApiGateway::GatewayResponse'
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+        gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+      ResponseType: DEFAULT_5XX
+      RestApiId:
+        Ref: 'ApiGatewayRestApi'
+
+
+  aws cognito-idp sign-up \
+  --region eu-west-1 \
+  --client-id 5f985si3cul9ucb9g3aof3v8of \
+  --username mkapeluszny@gmail.com \
+  --password Passw0rd!
+
+  aws cognito-idp admin-confirm-sign-up \
+  --region eu-west-1 \
+  --user-pool-id eu-west-1_h6GvHrDaF \
+  --username mkapeluszny@gmail.com
+
+  aws cognito-idp admin-initiate-auth --region eu-west-1 --cli-input-json file://auth.json --profile mkapeluszny

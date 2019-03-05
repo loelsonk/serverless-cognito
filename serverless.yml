@@ -1,0 +1,36 @@
+service: sls-cognito-backend
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+  profile: mkapeluszny
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+    - cognito-idp:ListUsers
+    Resource: "*"
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+
+functions:
+  hello:
+    name: hello-${opt:stage, self:provider.stage}
+    handler: handler.hello
+    events:
+    - http:
+        path: hello
+        method: get
+        cors: true
+        authorizer: aws_iam
+
+# Create our resources with separate CloudFormation templates
+# Create our resources with separate CloudFormation templates
+resources:
+  # S3
+  - ${file(resources/s3-bucket.yml)}
+  # Cognito
+  - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}
